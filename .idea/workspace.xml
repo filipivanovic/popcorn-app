@@ -35,7 +35,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -71,6 +71,15 @@
       <updated>1747393621807</updated>
       <workItem from="1747393623145" duration="1004000" />
     </task>
+    <task id="LOCAL-00001" summary="Add Prettier configuration and integrate into the project&#10;&#10;Introduced Prettier for code formatting with a `.prettierrc` file specifying custom formatting rules. Updated dependencies to include Prettier (`^3.5.3`) and adjusted IDE settings for automatic formatting on save.">
+      <option name="closed" value="true" />
+      <created>1747395136375</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747395136375</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -86,5 +95,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Add Prettier configuration and integrate into the project&#10;&#10;Introduced Prettier for code formatting with a `.prettierrc` file specifying custom formatting rules. Updated dependencies to include Prettier (`^3.5.3`) and adjusted IDE settings for automatic formatting on save." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Prettier configuration and integrate into the project&#10;&#10;Introduced Prettier for code formatting with a `.prettierrc` file specifying custom formatting rules. Updated dependencies to include Prettier (`^3.5.3`) and adjusted IDE settings for automatic formatting on save." />
   </component>
 </project>
