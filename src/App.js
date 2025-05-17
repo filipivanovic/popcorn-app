@@ -2,9 +2,11 @@ import { useState } from 'react'
 
 import NavBar from './components/layout/NavBar'
 import Main from './components/layout/Main'
-import Logo from './components/common/Logo'
 import Search from './components/common/Search'
 import NumResults from './components/common/NumResults'
+import ListBox from './components/movies/ListBox'
+import WatchedBox from './components/watched/WatchedBox'
+import MovieList from './components/movies/MovieList'
 
 const tempMovieData = [
   {
@@ -55,7 +57,6 @@ const tempWatchedData = [
 
 const App = () => {
   const [movies, setMovies] = useState(tempMovieData)
-  const [watched, setWatched] = useState(tempWatchedData)
 
   return (
     <>
@@ -63,7 +64,12 @@ const App = () => {
         <Search />
         <NumResults movies={movies} />
       </NavBar>
-      <Main watched={watched} movies={movies} />
+      <Main>
+        <ListBox>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox tempWatchedData={tempWatchedData} />
+      </Main>
     </>
   )
 }
