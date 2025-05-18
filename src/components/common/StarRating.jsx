@@ -12,8 +12,15 @@ const starContainerStyle = {
   display: 'flex'
 }
 
-const StarRating = ({ maxRating = 5, color = '#fcc419', size = 48 }) => {
-  const [rating, setRating] = useState(0)
+const StarRating = ({
+  maxRating = 5,
+  color = '#fcc419',
+  size = 48,
+  className = '',
+  messages = [],
+  defaultRating = 0
+}) => {
+  const [rating, setRating] = useState(defaultRating)
   const [tempRating, setTempRating] = useState(0)
 
   const textStyle = {
@@ -22,8 +29,7 @@ const StarRating = ({ maxRating = 5, color = '#fcc419', size = 48 }) => {
     color,
     fontSize: size / 1.5,
     fontWeight: 'bold',
-    textAlign: 'center',
-    cursor: 'pointer'
+    textAlign: 'center'
   }
 
   const handleRating = rating => {
@@ -31,7 +37,7 @@ const StarRating = ({ maxRating = 5, color = '#fcc419', size = 48 }) => {
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className={className}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
@@ -45,7 +51,11 @@ const StarRating = ({ maxRating = 5, color = '#fcc419', size = 48 }) => {
           />
         ))}
       </div>
-      <p style={textStyle}>{tempRating || rating || ''}</p>
+      <p style={textStyle}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ''}
+      </p>
     </div>
   )
 }
