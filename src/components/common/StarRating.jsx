@@ -12,14 +12,19 @@ const starContainerStyle = {
   display: 'flex'
 }
 
-const textStyle = {
-  lineHeight: '1',
-  margin: '0'
-}
-
-const StarRating = ({ maxRating = 5 }) => {
+const StarRating = ({ maxRating = 5, color = '#fcc419', size = 48 }) => {
   const [rating, setRating] = useState(0)
   const [tempRating, setTempRating] = useState(0)
+
+  const textStyle = {
+    lineHeight: '1',
+    margin: '0',
+    color,
+    fontSize: size / 1.5,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    cursor: 'pointer'
+  }
 
   const handleRating = rating => {
     setRating(rating)
@@ -35,6 +40,8 @@ const StarRating = ({ maxRating = 5 }) => {
             onRate={() => handleRating(i + 1)}
             onHoverIn={() => setTempRating(i + 1)}
             onHoverOut={() => setTempRating(0)}
+            color={color}
+            size={size}
           />
         ))}
       </div>
