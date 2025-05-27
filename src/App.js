@@ -65,23 +65,27 @@ const KEY = 'fdc9b2b2'
 const App = () => {
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const query = 'interstellar'
+  console.log(isLoading, 'isLoading')
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        setIsLoading(true)
         const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`)
         if (!res.ok) throw new Error('Failed to fetch movies')
         const data = await res.json()
         if (data.Response === 'True') {
           setMovies(data.Search)
-          console.log(data.Search)
         } else {
           throw new Error(data.Error) || 'Movie not found'
         }
       } catch (error) {
         console.error(`Error in fetchMovies method: ${error.message || error}`)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchMovies()
@@ -99,7 +103,7 @@ const App = () => {
 
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {isLoading ? <Loader /> : <MovieList movies={movies} />}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
@@ -107,6 +111,14 @@ const App = () => {
         </Box>
       </Main>
     </>
+  )
+}
+
+const Loader = () => {
+  return (
+    <div className="loader">
+      <span>Loading...</span>
+    </div>
   )
 }
 
