@@ -66,8 +66,9 @@ const App = () => {
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const query = 'interstellar'
+  const query = 'ggkkg'
   console.log(isLoading, 'isLoading')
 
   useEffect(() => {
@@ -75,8 +76,11 @@ const App = () => {
       try {
         setIsLoading(true)
         const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`)
+
         if (!res.ok) throw new Error('Failed to fetch movies')
+
         const data = await res.json()
+
         if (data.Response === 'True') {
           setMovies(data.Search)
         } else {
@@ -84,6 +88,7 @@ const App = () => {
         }
       } catch (error) {
         console.error(`Error in fetchMovies method: ${error.message || error}`)
+        setError(error.message || error)
       } finally {
         setIsLoading(false)
       }
@@ -103,7 +108,9 @@ const App = () => {
 
       <Main>
         <Box>
-          {isLoading ? <Loader /> : <MovieList movies={movies} />}
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
@@ -118,6 +125,14 @@ const Loader = () => {
   return (
     <div className="loader">
       <span>Loading...</span>
+    </div>
+  )
+}
+
+const ErrorMessage = ({message}) => {
+  return (
+    <div className="error">
+      <span>Error... ⛔</span> {message}
     </div>
   )
 }
