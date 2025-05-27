@@ -147,7 +147,7 @@ body {
   list-style: none;
   padding: 0.8rem 0;
   overflow-y: auto; /* vertical scrolling only when needed */
-  max-height: 60vh; /* prevent it from growing too tall */
+  /*max-height: 60vh; !* prevent it from growing too tall *!*/
 }
 
 .list-watched {

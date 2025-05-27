@@ -56,6 +56,10 @@ const tempWatchedData = [
   }
 ]
 
+// fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
+//   .then((res) => res.json())
+//   .then((data) => setMovies(data.Search))
+
 const KEY = 'fdc9b2b2'
 
 const App = () => {
@@ -63,9 +67,21 @@ const App = () => {
   const [watched, setWatched] = useState([])
 
   useEffect(() => {
-    fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
-      .then((res) => res.json())
-      .then((data) => setMovies(data.Search))
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
+        if (!res.ok) throw new Error('Failed to fetch movies')
+        const data = await res.json()
+        if (data.Response === 'True') {
+          setMovies(data.Search)
+        } else {
+          throw new Error(data.Error) || 'Movie not found'
+        }
+      } catch (error) {
+        console.error(`Error in fetchMovies method: ${error.message || error}`)
+      }
+    }
+    fetchMovies()
   }, [])
   
 
