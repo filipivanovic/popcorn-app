@@ -63,18 +63,33 @@ import WatchedList from './components/watched/WatchedList'
 const KEY = 'fdc9b2b2'
 
 const App = () => {
+  const [query, setQuery] = useState('')
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const query = 'ggkkg'
-  console.log(isLoading, 'isLoading')
+  const tempQuery = 'interstellar'
+/*
+  useEffect(() => {
+    console.log('After initial render')
+  }, [])
+  useEffect(() => {
+    console.log('After every render')
+  })
+
+  useEffect(() => {
+    console.log('D')
+  }, [query])
+
+  console.log('During render - always gets executed')
+*/
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         setIsLoading(true)
+        setError('')
         const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`)
 
         if (!res.ok) throw new Error('Failed to fetch movies')
@@ -92,17 +107,24 @@ const App = () => {
       } finally {
         setIsLoading(false)
       }
+
+      if (query.length < 3 ) {
+        setMovies([])
+        setError('')
+        return
+      }
+
     }
     fetchMovies()
-  }, [])
-  
+  }, [query])
+
 
 
 
   return (
     <>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
 
