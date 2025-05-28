@@ -4,10 +4,13 @@ import Loader from '../common/Loader'
 
 const KEY = 'fdc9b2b2'
 
-const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
+const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   const [movie, setMovie] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [userRating, setUserRating] = useState('')
+
+  const isWatched = watched.map(movie => movie.imdbID).includes(id)
+  console.log(isWatched)
 
   const handleAddMovie = () => {
     console.log('test')
@@ -61,11 +64,17 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} onSetRating={setUserRating} />
-              {userRating > 0 && (
-                <button className={`btn-add`} onClick={handleAddMovie}>
-                  + Add to list
-                </button>
+              {!isWatched ? (
+                <>
+                  <StarRating size={24} onSetRating={setUserRating} maxRating={10} />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAddMovie}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>You have already watched this movie</p>
               )}
             </div>
             <p>

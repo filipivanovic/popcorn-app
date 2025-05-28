@@ -148,6 +148,7 @@ const App = () => {
         <Box>
           {selectedId ? (
             <MovieDetails
+              watched={watched}
               onWatchedMovie={handleWatchedMovie}
               onCloseMovie={handleCloseMovie}
               id={selectedId}
