@@ -8,6 +8,7 @@ import Box from './components/movies/Box'
 import MovieList from './components/movies/MovieList'
 import WatchedSummary from './components/watched/WatchedSummary'
 import WatchedList from './components/watched/WatchedList'
+import MovieDetails from './components/movies/MovieDetails'
 
 // const tempMovieData = [
 //   {
@@ -56,21 +57,17 @@ import WatchedList from './components/watched/WatchedList'
 //   }
 // ]
 
-// fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
-//   .then((res) => res.json())
-//   .then((data) => setMovies(data.Search))
-
 const KEY = 'fdc9b2b2'
 
 const App = () => {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('inception')
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [selectedId, setSelectedId] = useState(null)
 
-  const tempQuery = 'interstellar'
-/*
+  /*
   useEffect(() => {
     console.log('After initial render')
   }, [])
@@ -84,6 +81,14 @@ const App = () => {
 
   console.log('During render - always gets executed')
 */
+
+  const handleSelectMovie = id => {
+    setSelectedId(selectedId => (selectedId === id ? null : id))
+  }
+
+  const handleCloseMovie = () => {
+    setSelectedId(null)
+  }
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -101,6 +106,7 @@ const App = () => {
         } else {
           throw new Error(data.Error) || 'Movie not found'
         }
+        console.log(data.Search)
       } catch (error) {
         console.error(`Error in fetchMovies method: ${error.message || error}`)
         setError(error.message || error)
@@ -108,18 +114,14 @@ const App = () => {
         setIsLoading(false)
       }
 
-      if (query.length < 3 ) {
+      if (query.length < 3) {
         setMovies([])
         setError('')
         return
       }
-
     }
     fetchMovies()
   }, [query])
-
-
-
 
   return (
     <>
@@ -131,12 +133,20 @@ const App = () => {
       <Main>
         <Box>
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectedMovie={handleSelectMovie} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedList watched={watched} />
+          {selectedId ? (
+            <MovieDetails onCloseMovie={handleCloseMovie} id={selectedId} />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
@@ -151,7 +161,7 @@ const Loader = () => {
   )
 }
 
-const ErrorMessage = ({message}) => {
+const ErrorMessage = ({ message }) => {
   return (
     <div className="error">
       <span>Error... ⛔</span> {message}
