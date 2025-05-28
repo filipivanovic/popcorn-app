@@ -9,6 +9,8 @@ import MovieList from './components/movies/MovieList'
 import WatchedSummary from './components/watched/WatchedSummary'
 import WatchedList from './components/watched/WatchedList'
 import MovieDetails from './components/movies/MovieDetails'
+import Loader from './components/common/Loader'
+import ErrorMessage from './components/common/ErrorMessage'
 
 // const tempMovieData = [
 //   {
@@ -90,6 +92,11 @@ const App = () => {
     setSelectedId(null)
   }
 
+  const handleWatchedMovie = movie => {
+    console.log(movie, 'movie')
+    setWatched(watched => [...watched, movie])
+  }
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -140,7 +147,11 @@ const App = () => {
         </Box>
         <Box>
           {selectedId ? (
-            <MovieDetails onCloseMovie={handleCloseMovie} id={selectedId} />
+            <MovieDetails
+              onWatchedMovie={handleWatchedMovie}
+              onCloseMovie={handleCloseMovie}
+              id={selectedId}
+            />
           ) : (
             <>
               <WatchedSummary watched={watched} />
@@ -150,22 +161,6 @@ const App = () => {
         </Box>
       </Main>
     </>
-  )
-}
-
-const Loader = () => {
-  return (
-    <div className="loader">
-      <span>Loading...</span>
-    </div>
-  )
-}
-
-const ErrorMessage = ({ message }) => {
-  return (
-    <div className="error">
-      <span>Error... ⛔</span> {message}
-    </div>
   )
 }
 

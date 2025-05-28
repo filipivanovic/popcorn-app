@@ -4,9 +4,24 @@ import Loader from '../common/Loader'
 
 const KEY = 'fdc9b2b2'
 
-const MovieDetails = ({ id, onCloseMovie }) => {
+const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
   const [movie, setMovie] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+
+  const handleAddMovie = () => {
+    console.log('test')
+    const newWatchedMovie = {
+      imdbID: id,
+      Title: movie.Title,
+      Year: movie.Year,
+      Poster: movie.Poster,
+      imdbRating: Number(movie.imdbRating),
+      runtime: Number(movie.Runtime.split(' ')[0])
+    }
+    console.log(newWatchedMovie)
+    onWatchedMovie(newWatchedMovie)
+    onCloseMovie()
+  }
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -45,6 +60,9 @@ const MovieDetails = ({ id, onCloseMovie }) => {
           <section>
             <div className="rating">
               <StarRating maxRating={10} size={24} />
+              <button className={`btn-add`} onClick={handleAddMovie}>
+                + Add to list
+              </button>
             </div>
             <p>
               <em>{movie.Plot}</em>
