@@ -7,6 +7,7 @@ const KEY = 'fdc9b2b2'
 const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
   const [movie, setMovie] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [userRating, setUserRating] = useState('')
 
   const handleAddMovie = () => {
     console.log('test')
@@ -16,7 +17,8 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
       Year: movie.Year,
       Poster: movie.Poster,
       imdbRating: Number(movie.imdbRating),
-      runtime: Number(movie.Runtime.split(' ')[0])
+      runtime: Number(movie.Runtime.split(' ')[0]),
+      userRating: Number(userRating)
     }
     console.log(newWatchedMovie)
     onWatchedMovie(newWatchedMovie)
@@ -59,10 +61,12 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie }) => {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} />
-              <button className={`btn-add`} onClick={handleAddMovie}>
-                + Add to list
-              </button>
+              <StarRating maxRating={10} size={24} onSetRating={setUserRating} />
+              {userRating > 0 && (
+                <button className={`btn-add`} onClick={handleAddMovie}>
+                  + Add to list
+                </button>
+              )}
             </div>
             <p>
               <em>{movie.Plot}</em>
