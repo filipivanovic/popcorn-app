@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import StarRating from '../common/StarRating'
 
 const KEY = 'fdc9b2b2'
 
@@ -31,10 +32,18 @@ const MovieDetails = ({ id, onCloseMovie }) => {
             <span>⭐</span>
             {movie.imdbRating} IMDB Rating
           </p>
-          <p>Starring: {movie.Actors}</p>
-          <p>Directed by {movie.Director}</p>
         </div>
       </header>
+      <section>
+        <div className="rating">
+          <StarRating maxRating={10} size={24} />
+        </div>
+        <p>
+          <em>{movie.Plot}</em>
+        </p>
+        <p>Starring: {movie.Actors}</p>
+        <p>Directed by {movie.Director}</p>
+      </section>
     </div>
   )
 }
