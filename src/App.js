@@ -137,7 +137,7 @@ const App = () => {
         setIsLoading(false)
       }
     }
-
+    handleCloseMovie()
     fetchMovies()
 
     return () => {
