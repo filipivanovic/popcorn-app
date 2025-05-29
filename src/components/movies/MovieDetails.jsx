@@ -10,7 +10,7 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   const [userRating, setUserRating] = useState('')
 
   const isWatched = watched.map(movie => movie.imdbID).includes(id)
-  console.log(isWatched)
+  const watchedUserRating = watched.find(movie => movie.imdbID === id)?.userRating
 
   const handleAddMovie = () => {
     console.log('test')
@@ -74,7 +74,12 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
                   )}
                 </>
               ) : (
-                <p>You have already watched this movie</p>
+                <p>
+                  You have already watched this movie:{' '}
+                  <em>
+                    {watchedUserRating} <span>⭐</span>
+                  </em>
+                </p>
               )}
             </div>
             <p>

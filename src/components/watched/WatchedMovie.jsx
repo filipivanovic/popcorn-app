@@ -1,4 +1,4 @@
-const WatchedMovie = ({ movie }) => {
+const WatchedMovie = ({ movie, onDeleteWatchedMovie }) => {
   return (
     <li key={movie.imdbID}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -16,6 +16,9 @@ const WatchedMovie = ({ movie }) => {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        <button className="btn-delete" onClick={() => onDeleteWatchedMovie(movie.imdbID)}>
+          X
+        </button>
       </div>
     </li>
   )
