@@ -29,6 +29,18 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   }
 
   useEffect(() => {
+    const callback = e => {
+      if (e.key === 'Escape') {
+        onCloseMovie()
+      }
+    }
+    document.addEventListener('keydown', callback)
+    return () => {
+      document.removeEventListener('keydown', callback)
+    }
+  }, [onCloseMovie])
+
+  useEffect(() => {
     const getMovieDetails = async () => {
       setIsLoading(true)
       const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&i=${id}`)
