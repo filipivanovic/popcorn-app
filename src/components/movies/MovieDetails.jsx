@@ -42,6 +42,9 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   useEffect(() => {
     if (!movie.Title) return
     document.title = `${movie.Title} | Popcorn App`
+    return () => {
+      document.title = 'Popcorn App'
+    }
   }, [movie])
 
   return (
