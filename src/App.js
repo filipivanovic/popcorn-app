@@ -62,7 +62,7 @@ import ErrorMessage from './components/common/ErrorMessage'
 const KEY = 'fdc9b2b2'
 
 const App = () => {
-  const [query, setQuery] = useState('inception')
+  const [query, setQuery] = useState('')
   const [movies, setMovies] = useState([])
   const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -104,13 +104,13 @@ const App = () => {
   useEffect(() => {
     const controller = new AbortController()
 
-    if (query.length < 3) {
-      setMovies([])
-      setError('')
-      return
-    }
-
     const fetchMovies = async () => {
+      if (query.length < 3) {
+        setMovies([])
+        setError('')
+        return
+      }
+
       try {
         setIsLoading(true)
         setError('')
@@ -125,11 +125,12 @@ const App = () => {
 
         if (data.Response === 'True') {
           setMovies(data.Search)
+          setError('')
         } else {
           throw new Error(data.Error || 'Movie not found')
         }
       } catch (error) {
-        if (error.name === 'AbortError') return // ✅ ignore expected aborts
+        if (error.name === 'AbortError') return
         console.error(`Error in fetchMovies method: ${error.message || error}`)
         setError(error.message || error)
       } finally {
