@@ -39,6 +39,11 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
     getMovieDetails()
   }, [id])
 
+  useEffect(() => {
+    if (!movie.Title) return
+    document.title = `${movie.Title} | Popcorn App`
+  }, [movie])
+
   return (
     <div className="details">
       {isLoading ? (
