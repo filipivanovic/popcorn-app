@@ -2,16 +2,30 @@ import { useEffect, useState } from 'react'
 import StarRating from '../common/StarRating'
 import Loader from '../common/Loader'
 
+// API key for OMDB (Open Movie Database)
 const KEY = 'fdc9b2b2'
 
+/**
+ * MovieDetails component displays detailed information about a selected movie
+ * @param {string} id - IMDB ID of the movie
+ * @param {function} onCloseMovie - Handler to close the movie details
+ * @param {function} onWatchedMovie - Handler to add movie to watched list
+ * @param {Array} watched - List of movies already watched
+ */
 const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
+  // State management for movie details, loading state, and user rating
   const [movie, setMovie] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [userRating, setUserRating] = useState('')
 
+  // Check if the movie is already in watched list
   const isWatched = watched.map(movie => movie.imdbID).includes(id)
   const watchedUserRating = watched.find(movie => movie.imdbID === id)?.userRating
 
+  /**
+   * Handles adding a movie to the watched list with user rating
+   * Creates a new movie object with selected properties and converts numeric values
+   */
   const handleAddMovie = () => {
     const newWatchedMovie = {
       imdbID: id,
@@ -19,13 +33,14 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
       Year: movie.Year,
       Poster: movie.Poster,
       imdbRating: Number(movie.imdbRating),
-      runtime: Number(movie.Runtime.split(' ')[0]),
+      runtime: Number(movie.Runtime.split(' ')[0]), // Extract numeric value from "123 min"
       userRating: Number(userRating)
     }
     onWatchedMovie(newWatchedMovie)
     onCloseMovie()
   }
 
+  // Effect hook to handle ESC key press for closing movie details
   useEffect(() => {
     const callback = e => {
       if (e.key === 'Escape') {
@@ -38,6 +53,7 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
     }
   }, [onCloseMovie])
 
+  // Effect hook to fetch movie details from OMDB API
   useEffect(() => {
     const getMovieDetails = async () => {
       setIsLoading(true)
@@ -49,11 +65,12 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
     getMovieDetails()
   }, [id])
 
+  // Effect hook to update document title when movie details are loaded
   useEffect(() => {
     if (!movie.Title) return
     document.title = `${movie.Title} | Popcorn App`
     return () => {
-      document.title = 'Popcorn App'
+      document.title = 'Popcorn App' // Reset title when component unmounts
     }
   }, [movie])
 
@@ -63,6 +80,7 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
         <Loader />
       ) : (
         <>
+          {/* Movie header with poster and basic info */}
           <header>
             <button className={`btn-back`} onClick={onCloseMovie}>
               &larr;
@@ -80,6 +98,7 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
               </p>
             </div>
           </header>
+          {/* Movie details section with rating and additional info */}
           <section>
             <div className="rating">
               {!isWatched ? (
