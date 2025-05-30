@@ -13,7 +13,6 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   const watchedUserRating = watched.find(movie => movie.imdbID === id)?.userRating
 
   const handleAddMovie = () => {
-    console.log('test')
     const newWatchedMovie = {
       imdbID: id,
       Title: movie.Title,
@@ -23,7 +22,6 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
       runtime: Number(movie.Runtime.split(' ')[0]),
       userRating: Number(userRating)
     }
-    console.log(newWatchedMovie)
     onWatchedMovie(newWatchedMovie)
     onCloseMovie()
   }
