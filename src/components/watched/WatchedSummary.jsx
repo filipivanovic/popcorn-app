@@ -5,7 +5,7 @@ const WatchedSummary = ({ watched }) => {
   const avgRuntime = average(watched.map(movie => movie.runtime))
   return (
     <div className="summary">
-      <h2>Movies you watched</h2>
+      <h2>Movies you watched:</h2>
       <div>
         <p>
           <span>#️⃣</span>
