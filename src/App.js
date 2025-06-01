@@ -19,6 +19,7 @@ import MovieDetails from './components/movies/MovieDetails'
 import WatchedSummary from './components/watched/WatchedSummary'
 import WatchedList from './components/watched/WatchedList'
 import { useMovies } from './hooks/useMovies'
+import { useLocalStorageState } from './hooks/useLocalStorageState'
 
 // API key for OMDB API
 const KEY = 'fdc9b2b2'
@@ -56,9 +57,7 @@ const App = () => {
 
   const { movies, error, isLoading } = useMovies(query)
 
-  useEffect(() => {
-    localStorage.setItem('watched', JSON.stringify(watched))
-  }, [watched])
+  useLocalStorageState(watched)
 
   return (
     <>
