@@ -15,9 +15,10 @@ import Box from './components/movies/Box'
 import MovieList from './components/movies/MovieList'
 import MovieDetails from './components/movies/MovieDetails'
 
-// Watched movies components
+// Watched movie components
 import WatchedSummary from './components/watched/WatchedSummary'
 import WatchedList from './components/watched/WatchedList'
+import { useMovies } from './hooks/useMovies'
 
 // API key for OMDB API
 const KEY = 'fdc9b2b2'
@@ -25,10 +26,6 @@ const KEY = 'fdc9b2b2'
 const App = () => {
   // State management for the application
   const [query, setQuery] = useState('') // Search query
-  const [movies, setMovies] = useState([]) // List of movies from search
-  // const [watched, setWatched] = useState([]) // List of watched movies
-  const [isLoading, setIsLoading] = useState(false) // Loading state
-  const [error, setError] = useState('') // Error handling
   const [selectedId, setSelectedId] = useState(null) // Currently selected movie
 
   const [watched, setWatched] = useState(() => {
@@ -57,57 +54,7 @@ const App = () => {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id))
   }
 
-  // Effect for fetching movies when search query changes
-  useEffect(() => {
-    // Controller for aborting fetch requests
-    const controller = new AbortController()
-
-    const fetchMovies = async () => {
-      // Don't search if query is too short
-      if (query.length < 3) {
-        setMovies([])
-        setError('')
-        return
-      }
-
-      try {
-        setIsLoading(true)
-        setError('')
-
-        // Fetch movies from OMDB API
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${KEY}&s=${query}`, {
-          signal: controller.signal
-        })
-
-        if (!res.ok) throw new Error('Failed to fetch movies')
-
-        const data = await res.json()
-
-        // Handle successful response
-        if (data.Response === 'True') {
-          setMovies(data.Search)
-          setError('')
-        } else {
-          throw new Error(data.Error || 'Movie not found')
-        }
-      } catch (error) {
-        // Ignore abort errors (these happen when component unmounts)
-        if (error.name === 'AbortError') return
-        console.error(`Error in fetchMovies method: ${error.message || error}`)
-        setError(error.message || error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    handleCloseMovie() // Close movie details when search changes
-    fetchMovies()
-
-    // Cleanup function to abort fetch when component unmounts or query changes
-    return () => {
-      controller.abort()
-    }
-  }, [query])
+  const { movies, error, isLoading } = useMovies(query)
 
   useEffect(() => {
     localStorage.setItem('watched', JSON.stringify(watched))
