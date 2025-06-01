@@ -29,11 +29,6 @@ const App = () => {
   const [query, setQuery] = useState('') // Search query
   const [selectedId, setSelectedId] = useState(null) // Currently selected movie
 
-  const [watched, setWatched] = useState(() => {
-    const storedValue = localStorage.getItem('watched')
-    return storedValue ? JSON.parse(storedValue) : []
-  })
-
   // Handles movie selection - toggles selection if clicking same movie
   const handleSelectMovie = id => {
     setSelectedId(selectedId => (selectedId === id ? null : id))
@@ -57,7 +52,7 @@ const App = () => {
 
   const { movies, error, isLoading } = useMovies(query)
 
-  useLocalStorageState(watched)
+  const [watched, setWatched] = useLocalStorageState([], 'watched')
 
   return (
     <>
