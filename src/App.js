@@ -26,10 +26,15 @@ const App = () => {
   // State management for the application
   const [query, setQuery] = useState('') // Search query
   const [movies, setMovies] = useState([]) // List of movies from search
-  const [watched, setWatched] = useState([]) // List of watched movies
+  // const [watched, setWatched] = useState([]) // List of watched movies
   const [isLoading, setIsLoading] = useState(false) // Loading state
   const [error, setError] = useState('') // Error handling
   const [selectedId, setSelectedId] = useState(null) // Currently selected movie
+
+  const [watched, setWatched] = useState(() => {
+    const storedValue = localStorage.getItem('watched')
+    return storedValue ? JSON.parse(storedValue) : []
+  })
 
   // Handles movie selection - toggles selection if clicking same movie
   const handleSelectMovie = id => {
@@ -44,6 +49,7 @@ const App = () => {
   // Adds a movie to the watched list
   const handleWatchedMovie = movie => {
     setWatched(watched => [...watched, movie])
+    // localStorage.setItem('watched', JSON.stringify([...watched, movie]))
   }
 
   // Removes a movie from the watched list
@@ -102,6 +108,10 @@ const App = () => {
       controller.abort()
     }
   }, [query])
+
+  useEffect(() => {
+    localStorage.setItem('watched', JSON.stringify(watched))
+  }, [watched])
 
   return (
     <>
