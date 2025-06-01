@@ -54,7 +54,7 @@ const App = () => {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id))
   }
 
-  const { movies, error, isLoading } = useMovies(query)
+  const { movies, error, isLoading } = useMovies(query, handleCloseMovie)
 
   useEffect(() => {
     localStorage.setItem('watched', JSON.stringify(watched))
