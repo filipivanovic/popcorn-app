@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 
 const KEY = 'fdc9b2b2'
 
-export const useMovies = query => {
+export const useMovies = (query, callback) => {
   const [movies, setMovies] = useState([]) // List of movies from search
   const [isLoading, setIsLoading] = useState(false) // Loading state
   const [error, setError] = useState('') // Error handling
   useEffect(() => {
+    callback?.()
+
     // Controller for aborting fetch requests
     const controller = new AbortController()
 
