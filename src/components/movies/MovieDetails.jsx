@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import StarRating from '../common/StarRating'
 import Loader from '../common/Loader'
 
@@ -22,6 +22,12 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
   const isWatched = watched.map(movie => movie.imdbID).includes(id)
   const watchedUserRating = watched.find(movie => movie.imdbID === id)?.userRating
 
+  const countRef = useRef(0)
+
+  useEffect(() => {
+    if (userRating) countRef.current += 1
+  }, [userRating])
+
   /**
    * Handles adding a movie to the watched list with user rating
    * Creates a new movie object with selected properties and converts numeric values
@@ -34,7 +40,8 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
       Poster: movie.Poster,
       imdbRating: Number(movie.imdbRating),
       runtime: Number(movie.Runtime.split(' ')[0]), // Extract numeric value from "123 min"
-      userRating: Number(userRating)
+      userRating: Number(userRating),
+      countRatingDecisions: countRef.current
     }
     onWatchedMovie(newWatchedMovie)
     onCloseMovie()
