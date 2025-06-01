@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import StarRating from '../common/StarRating'
 import Loader from '../common/Loader'
+import { useKey } from '../../hooks/useKey'
 
 // API key for OMDB (Open Movie Database)
 const KEY = 'fdc9b2b2'
@@ -47,18 +48,7 @@ const MovieDetails = ({ id, onCloseMovie, onWatchedMovie, watched }) => {
     onCloseMovie()
   }
 
-  // Effect hook to handle ESC key press for closing movie details
-  useEffect(() => {
-    const callback = e => {
-      if (e.key === 'Escape') {
-        onCloseMovie()
-      }
-    }
-    document.addEventListener('keydown', callback)
-    return () => {
-      document.removeEventListener('keydown', callback)
-    }
-  }, [onCloseMovie])
+  useKey('Escape', onCloseMovie)
 
   // Effect hook to fetch movie details from OMDB API
   useEffect(() => {
